@@ -3,7 +3,7 @@
 #	title = WalkTheWeb Coin Tokens
 #	description = WalkTheWeb Coins adds in-game collectible Tokens that can be used to buy in-game upgrades or enhancements (Not real currency).
 #	author = Aaron Dishno Ed.D.
-# 	version = 1.0.0
+# 	version = 1.0.1
 
 /* For more information about 3D plugins and the latest updates, see: 	*/
 /* https://www.walktheweb.com/wiki/3d-plugin-template/ 					*/

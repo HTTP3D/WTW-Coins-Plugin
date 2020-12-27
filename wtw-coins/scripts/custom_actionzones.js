@@ -714,7 +714,7 @@ WTW_COINS.prototype.loadCoinValues = function() {
 			dGet('wtwcoins_tvalue1').add(zoption100);
 		}
 	} catch (ex) {
-		WTW.log("plugins:wtw-coins:scripts-custom_actionzones.js-submitCoinForm=" + ex.message);
+		WTW.log("plugins:wtw-coins:scripts-custom_actionzones.js-loadCoinValues=" + ex.message);
 	}
 }
 
@@ -890,6 +890,10 @@ WTW_COINS.prototype.collectCoin = function(zactionzonename, zactionzoneind) {
 							/* note serror would contain errors */
 						}
 					);
+					/* show globe if user is logged into WalkTheWeb Global Account */
+					if (dGet('wtw_tglobaluserid').value != '' && dGet('wtw_tusertoken').value != '') {
+						WTW.showInline('wtwcoins_global');
+					}
 				}
 			}
 			if (WTW.actionZones[zactionzoneind].status == 2 || WTW.actionZones[zactionzoneind].status == 5) {

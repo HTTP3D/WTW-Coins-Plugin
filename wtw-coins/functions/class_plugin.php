@@ -75,7 +75,7 @@ class wtwcoins {
 				/* add admin menu items */
 				/* wtwplugins class -> addAdminMenuItem function (menu item id, menu text, level 1 sort, level 1 id, level 2 sort, level 2 id, level 1 icon, allowed roles array - null for all, onclick JavaScript function) */
 
-				$wtwplugins->addAdminSubMenuItem('editbuilding', 'wtw_adminbuildingcoins', '<div class="wtw-altkey">ctrl+c</div>Add WTW <u>C</u>oin', 50, $zupdateroles, "wtwcoins.addNewCoin();");
+//				$wtwplugins->addAdminSubMenuItem('editbuilding', 'wtw_adminbuildingcoins', '<div class="wtw-altkey">ctrl+c</div>Add WTW <u>C</u>oin', 50, $zupdateroles, "wtwcoins.addNewCoin();");
 				
 				/* $wtwplugins->addAdminMenuItem('wtw_adminpaintball', '3D Stores', 95, 'wtw_paintball', 0, '', wtwcoins_URL.'/assets/images/menustore.png', array('admin','developer','architect'), null); */
 				/* $wtwplugins->addAdminMenuItem('wtw_adminliststores', 'List Stores', 95, 'wtw_paintball', 1, 'wtw_liststores', '', array('admin','developer','architect'), "WTW.openFullPageForm('fullpage','List Stores','wtw_liststorespage');wtwcoins.getStores();"); */
@@ -86,7 +86,15 @@ class wtwcoins {
 				/* admin full page settings forms */
 				/* wtwplugins class -> addFullPageForm function (form id, allowed roles array - null for all, form html string) */
 				/* $wtwplugins->addFullPageForm('wtw_liststorespage', array('admin','developer','architect'), $this->listStoresPage()); */
+
+				$wtwplugins->addAdminSubMenuItem('editcommunity', 'wtwcoins_adminCommunityMoldObjects', 'Add WTW Coin Objects', 120, array('admin','developer','architect'), "wtwcoins.openAdminCoinObjects();");
 				
+				$wtwplugins->addAdminSubMenuItem('editbuilding', 'wtwcoins_adminBuildingMoldObjects', 'Add WTW Coin Objects', 120, array('admin','developer','architect'), "wtwcoins.openAdminCoinObjects();");
+				
+				$wtwplugins->addAdminSubMenuItem('editthing', 'wtwcoins_adminThingMoldObjects', 'Add WTW Coin Objects', 120, array('admin','developer','architect'), "wtwcoins.openAdminCoinObjects();");
+				
+				$wtwplugins->addAdminMenuForm('wtwcoins_adminMoldObjectsDiv', 'Add WTW Coin Objects', $this->coinObjectsForm('community'), array('admin','developer','architect'));
+
 			}
 		} catch (Exception $e) {
 			$wtwplugins->serror("plugins:wtw-coins:functions-class_plugin.php-initAdminOnlyHooks=".$e->getMessage());
@@ -114,16 +122,18 @@ class wtwcoins {
 			/* $wtwplugins->addScriptFunction("checkactionzone", "wtwcoins.checkActionZone(zactionzonename, zactionzoneind, zmeinzone, zothersinzone);"); */
 			/* $wtwplugins->addScriptFunction("checkhovers", "wtwcoins.checkHovers(zmoldname, zshape);"); */
 			/* $wtwplugins->addScriptFunction("resethovers", "wtwcoins.resetHovers(zmoldname, zshape);"); */
-			/* $wtwplugins->addScriptFunction("disposeclean", "wtwcoins.disposeClean(zmoldname);"); */
+			
+			$wtwplugins->addScriptFunction("disposeclean", "wtwcoins.disposeClean(zmoldname);");
 			
 			
 			/* Custom Molds (meshes) */
 			/* The following create the list of new molds added by this plugin and assign the script to create the mold */
 			/* $wtwplugins->addMoldDef("My Custom Mold - NAME FOR THE LIST", "webmold or mold - LIST", "wtwcoins.functionname(passed, values);"); */
 			//$wtwplugins->addMoldDef("My Custom Mold", "webmold", "wtwcoins.addMoldMyCustomMold(zmoldname, zmolddef, zlenx, zleny, zlenz);");
+
 			/* Set the custom mold defaults and show-hide form fields as needed */
-			//$wtwplugins->addScriptFunction("setnewmolddefaults", "wtwcoins.setNewMoldDefaults(zshape, zpositionx, zpositiony, zpositionz, zrotationy);");
-			//$wtwplugins->addScriptFunction("setmoldformfields", "wtwcoins.setMoldFormFields(zshape);");
+			$wtwplugins->addScriptFunction("setnewmolddefaults", "wtwcoins.setNewMoldDefaults(zshape, zpositionx, zpositiony, zpositionz, zrotationy);");
+			$wtwplugins->addScriptFunction("setmoldformfields", "wtwcoins.setMoldFormFields(zshape);");
 
 			/* Custom action zones */
 			/* The following create the list of new action zones added by this plugin and assign the script to create the action zone */
@@ -147,7 +157,24 @@ class wtwcoins {
 
 			/* browse menu (bottom) settings Menu Forms */
 			/* wtwplugins class-> addMenuForm function (form id, title text, form html string, allow roles array - null for all, cssclass) */
-			$wtwplugins->addMenuForm("wtw_wtwcoinsettingsform", "WTW Coin Settings", $this->wtwCoinSettingsForm(), null, 'wtw-slideupmenuright');			
+			$wtwplugins->addMenuForm("wtw_wtwcoinsettingsform", "WTW Coin Settings", $this->wtwCoinSettingsForm(), null, 'wtw-slideupmenuright');
+			
+			$wtwplugins->addMoldDef("WTW Coin Platform", "custom", "wtwcoins.addMoldPlatform('platform.babylon', zmoldname, zmolddef, zlenx, zleny, zlenz);");
+			
+			$wtwplugins->addMoldDef("WTW Coin Ramp Platform", "custom", "wtwcoins.addMoldPlatform('platformramp.babylon', zmoldname, zmolddef, zlenx, zleny, zlenz);");
+			
+			$wtwplugins->addMoldDef("WTW Coin Ramp Large Platform", "custom", "wtwcoins.addMoldPlatform('platform2ramp.babylon', zmoldname, zmolddef, zlenx, zleny, zlenz);");
+			
+			$wtwplugins->addMoldDef("WTW Coin Base", "custom", "wtwcoins.addMoldPlatform('platformbase.babylon', zmoldname, zmolddef, zlenx, zleny, zlenz);");
+			
+			$wtwplugins->addMoldDef("WTW Coin Base Double", "custom", "wtwcoins.addMoldPlatform('platformbase-double.babylon', zmoldname, zmolddef, zlenx, zleny, zlenz);");
+			
+			$wtwplugins->addMoldDef("WTW Coin Base Tripple", "custom", "wtwcoins.addMoldPlatform('platformbase-tripple.babylon', zmoldname, zmolddef, zlenx, zleny, zlenz);");
+			
+			$wtwplugins->addMoldDef("WTW Coin Base Quad", "custom", "wtwcoins.addMoldPlatform('platformbase-quad.babylon', zmoldname, zmolddef, zlenx, zleny, zlenz);");
+			
+			$wtwplugins->addMoldDef("WTW Coin Lift", "custom", "wtwcoins.addMoldPlatformLift('platformlift.babylon', zmoldname, zmolddef, zlenx, zleny, zlenz);");
+			
 		} catch (Exception $e) {
 			$wtwplugins->serror("plugins:wtw-coins:functions-class_plugin.php-initHooks=".$e->getMessage());
 		}
@@ -162,8 +189,8 @@ class wtwcoins {
 			/* deltaCreateTable will add, alter, or remove fields or add the table if it doesnt exist */
 			/* check core/functions/class_wtwdb.php deltaCreateTable function for full support */
 			if ($wtwplugins->pagename == "admin.php") {
-				$dbversion = $wtwplugins->getSetting(WTW_COINS_PREFIX."dbversion");
-				if ($dbversion != $this->dbversion) {
+				$zdbversion = $wtwplugins->getSetting(WTW_COINS_PREFIX."dbversion");
+				if ($zdbversion != $this->dbversion || empty($zdbversion) || !isset($zdbversion)) {
 					$wtwplugins->deltaCreateTable("
 						CREATE TABLE `".WTW_COINS_PREFIX."collected` (
 						  `wtwcoinid` varchar(16) NOT NULL,
@@ -209,6 +236,19 @@ class wtwcoins {
 		}
 	}
 
+	public function coinObjectsForm() {
+		/* admin store settings form */
+		global $wtwplugins;
+		$zformdata = "";
+		try {
+			$zformdata .= "<div id=\"wtwcoins_moldsbuttonlist\"></div><br />\r\n";
+			$zformdata .= "<div id=\"wtwcoins_cancelcoinobject\" class=\"wtw-yellowbutton\" onclick=\"wtwcoins.closeAdminCoinObjects();\">Cancel</div><br /><br />\r\n\r\n";
+		} catch (Exception $e) {
+			$wtwplugins->serror("plugins:wtw-coins:functions-class_plugin.php-coinObjectsForm=".$e->getMessage());
+		}
+		return $zformdata;
+	}
+	
 	public function wtwCoinSettingsForm() {
 		/* form for wtw Coin settings on browse menu */
 		$zformdata = "";

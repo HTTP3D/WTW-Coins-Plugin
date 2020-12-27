@@ -50,6 +50,7 @@ WTW_COINS.prototype.onClick = function(zpickedname) {
 
 WTW_COINS.prototype.mouseClickRightAdmin = function(e, zpickedname) {
 	try {
+		var zmoldnameparts = WTW.getMoldnameParts(zpickedname);
 		/* submit mold if one was being edited when the new 3D Object was selected */
 		if (dGet('wtw_tmoldid').value != "" && WTW.isNumeric(dGet('wtw_tmoldind').value)) {
 			WTW.submitMoldForm(1);
@@ -60,7 +61,7 @@ WTW_COINS.prototype.mouseClickRightAdmin = function(e, zpickedname) {
 				wtwcoins.submitCoinForm(1);
 			}
 		}
-		if (zpickedname.indexOf('wtwcoin') > -1) {
+		if (zmoldnameparts.shape == 'wtwcoin') {
 			/* get actionzone holding coin */
 			var znameparts = zpickedname.split('-');
 			zpickedname = znameparts[0] + '-' + znameparts[1] + '-' + znameparts[2] + '-' + znameparts[3] + '-' + znameparts[4] + '-' + znameparts[5];
@@ -163,3 +164,5 @@ WTW_COINS.prototype.loadUserSettings = function() {
 		WTW.log("plugins:wtw-coins:scripts-class_main.js-loadUserSettings=" + ex.message);
 	} 
 }
+
+
