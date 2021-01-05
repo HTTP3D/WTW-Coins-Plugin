@@ -124,22 +124,22 @@ WTW_COINS.prototype.toggleWTWGhostCoins = function(zenable) {
 			if (zenable == 1) {
 				WTW.setCookie("wtwghostcoins", '1', 365);
 				dGet('wtwcoins_showghostcoins').checked = true;
-				dGet('wtwcoins_showghostcoinstext').className = 'wtwcoins-enablelabel';
+				dGet('wtwcoins_showghostcoinstext').className = 'wtw-enablelabel';
 				dGet('wtwcoins_showghostcoinstext').innerHTML = 'Visible';
 			} else {
 				WTW.setCookie("wtwghostcoins", '0', 365);
 				dGet('wtwcoins_showghostcoins').checked = false;
-				dGet('wtwcoins_showghostcoinstext').className = 'wtwcoins-disabledlabel';
+				dGet('wtwcoins_showghostcoinstext').className = 'wtw-disabledlabel';
 				dGet('wtwcoins_showghostcoinstext').innerHTML = 'Hidden';
 			}
 		} else {
 			if (dGet('wtwcoins_showghostcoins').checked) {
 				WTW.setCookie("wtwghostcoins", '1', 365);
-				dGet('wtwcoins_showghostcoinstext').className = 'wtwcoins-enablelabel';
+				dGet('wtwcoins_showghostcoinstext').className = 'wtw-enablelabel';
 				dGet('wtwcoins_showghostcoinstext').innerHTML = 'Visible';
 			} else {
 				WTW.setCookie("wtwghostcoins", '0', 365);
-				dGet('wtwcoins_showghostcoinstext').className = 'wtwcoins-disabledlabel';
+				dGet('wtwcoins_showghostcoinstext').className = 'wtw-disabledlabel';
 				dGet('wtwcoins_showghostcoinstext').innerHTML = 'Hidden';
 			}
 		}

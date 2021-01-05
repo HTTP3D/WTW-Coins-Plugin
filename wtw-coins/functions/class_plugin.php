@@ -257,7 +257,7 @@ class wtwcoins {
 			$zformdata .= "	Ghost WTW Coins: After you collect a coin, if you visit it again or refresh the browser, you have the option to see the WTW Coins placement as Ghost WTW Coins. Ghost WTW Coins have no value if collected but can help you show others a 3D Scene.</div><br />";
 			
 			$zformdata .= "<div class=\"wtw-onecol\" style=\"white-space:nowrap;text-align:center;\">Ghost WTW Coins</div><br />\r\n";
-			$zformdata .= "<label class=\"wtwcoins-switch\" style=\"white-space:nowrap;margin-left:50px;\"><input id=\"wtwcoins_showghostcoins\" type=\"checkbox\" onclick=\"wtwcoins.toggleWTWGhostCoins();\"><span class=\"wtwcoins-slider wtwcoins-round\"></span></label><div id=\"wtwcoins_showghostcoinstext\" class=\"wtwcoins-disabledlabel\">Hidden</div><br /><br />\r\n";
+			$zformdata .= "<label class=\"wtw-switch\" style=\"white-space:nowrap;margin-left:50px;\"><input id=\"wtwcoins_showghostcoins\" type=\"checkbox\" onclick=\"wtwcoins.toggleWTWGhostCoins();\"><span class=\"wtw-slider wtw-round\"></span></label><div id=\"wtwcoins_showghostcoinstext\" class=\"wtw-disabledlabel\">Hidden</div><br /><br />\r\n";
 		} catch (Exception $e) {
 			$wtwplugins->serror("plugins:wtw-coins:functions-class_plugin.php-wtwCoinSettingsForm=".$e->getMessage());
 		}
@@ -292,7 +292,7 @@ class wtwcoins {
 			$zformdata .= "	<input type=\"button\" id=\"wtwcoins_beditcoinyp1\" class=\"wtw-smallprint\" value=\"+1\" onmousedown=\"wtwcoins.changeNumberValue('wtwcoins_tactionzonecoiny', 1);\" onmouseup=\"WTW.changeStop();\" style=\"cursor: pointer;\" />\r\n";
 			$zformdata .= "</div><br /><br />\r\n";
 			
-			$zformdata .= "<label class=\"wtwcoins-switch\"><input id=\"wtwcoins_rotationdirection\" type=\"checkbox\" onclick=\"wtwcoins.changeRotateDirection();\"><span class=\"wtwcoins-slider wtwcoins-round\"></span></label><div id=\"wtwcoins_rotatedirtext\" class=\"wtwcoins-enablelabel\">Reverse Direction</div>\r\n";
+			$zformdata .= "<label class=\"wtw-switch\"><input id=\"wtwcoins_rotationdirection\" type=\"checkbox\" onclick=\"wtwcoins.changeRotateDirection();\"><span class=\"wtw-slider wtw-round\"></span></label><div id=\"wtwcoins_rotatedirtext\" class=\"wtw-enablelabel\">Reverse Direction</div>\r\n";
 			
 			$zformdata .= "<hr class=\"wtw-menuhr\" />\r\n";
 			$zformdata .= "<h2 style=\"margin-bottom:3px;\">Coin Value</h2>\r\n";
