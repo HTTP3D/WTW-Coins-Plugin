@@ -75,17 +75,12 @@ class wtwcoins {
 				/* add admin menu items */
 				/* wtwplugins class -> addAdminMenuItem function (menu item id, menu text, level 1 sort, level 1 id, level 2 sort, level 2 id, level 1 icon, allowed roles array - null for all, onclick JavaScript function) */
 
-//				$wtwplugins->addAdminSubMenuItem('editbuilding', 'wtw_adminbuildingcoins', '<div class="wtw-altkey">ctrl+c</div>Add WTW <u>C</u>oin', 50, $zupdateroles, "wtwcoins.addNewCoin();");
-				
-				/* $wtwplugins->addAdminMenuItem('wtw_adminpaintball', '3D Stores', 95, 'wtw_paintball', 0, '', wtwcoins_URL.'/assets/images/menustore.png', array('admin','developer','architect'), null); */
-				/* $wtwplugins->addAdminMenuItem('wtw_adminliststores', 'List Stores', 95, 'wtw_paintball', 1, 'wtw_liststores', '', array('admin','developer','architect'), "WTW.openFullPageForm('fullpage','List Stores','wtw_liststorespage');wtwcoins.getStores();"); */
 
 				/* add admin div section form */
 				$wtwplugins->addAdminMenuForm('wtwcoins_editcoindiv', 'Coin Settings', $this->editCoinForm(), array('admin','developer','architect'));
 				
 				/* admin full page settings forms */
 				/* wtwplugins class -> addFullPageForm function (form id, allowed roles array - null for all, form html string) */
-				/* $wtwplugins->addFullPageForm('wtw_liststorespage', array('admin','developer','architect'), $this->listStoresPage()); */
 
 				$wtwplugins->addAdminSubMenuItem('editcommunity', 'wtwcoins_adminCommunityMoldObjects', 'Add WTW Coin Objects', 120, array('admin','developer','architect'), "wtwcoins.openAdminCoinObjects();");
 				
