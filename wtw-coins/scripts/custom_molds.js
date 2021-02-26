@@ -143,12 +143,10 @@ WTW_COINS.prototype.addMoldPlatform = function(zobjectfile, zmoldname, zmolddef,
 	/* creates a Babylon File based Mold - platform to walk on while collecting WTW Coins */
 	let zmold;
 	try {
-		zmold = BABYLON.MeshBuilder.CreateBox(zmoldname, {}, scene);
-		zmold.scaling = new BABYLON.Vector3(zlenx,zleny,zlenz);
-		/* material for the invisible box parent */
-		var ztransparentmat = new BABYLON.StandardMaterial("mat" + zmoldname, scene);
-		ztransparentmat.alpha = 0;
-		zmold.material = ztransparentmat;
+		zmold = new BABYLON.TransformNode(zmoldname);
+		zmold.position = new BABYLON.Vector3(0,0,0);
+		zmold.rotation = new BABYLON.Vector3(0,0,0);
+		zmold.scaling = new BABYLON.Vector3(zlenx, zleny, zlenz);
 
 		var zobjectfolder = '/content/plugins/wtw-coins/assets/3dobjects/';
 		BABYLON.SceneLoader.ImportMeshAsync("", zobjectfolder, zobjectfile, scene).then(
@@ -182,7 +180,7 @@ WTW_COINS.prototype.addMoldPlatform = function(zobjectfile, zmoldname, zmolddef,
 						}
 					}
 				}
-				zmold = scene.getMeshByID(zmoldname);
+				zmold = WTW.getMeshOrNodeByID(zmoldname);
 				if (zmold == null || zmold.parent == null) {
 					/* if the parent has been deleted after this async process began (avoiding orphaned bjects) */
 					WTW.disposeClean(zmoldname);
@@ -199,12 +197,10 @@ WTW_COINS.prototype.addMoldPlatformLift = function(zobjectfile, zmoldname, zmold
 	/* creates a Babylon File based Mold - platform to walk on while collecting WTW Coins */
 	let zmold;
 	try {
-		zmold = BABYLON.MeshBuilder.CreateBox(zmoldname, {}, scene);
-		zmold.scaling = new BABYLON.Vector3(zlenx,zleny,zlenz);
-		/* material for the invisible box parent */
-		var ztransparentmat = new BABYLON.StandardMaterial("mat" + zmoldname, scene);
-		ztransparentmat.alpha = 0;
-		zmold.material = ztransparentmat;
+		zmold = new BABYLON.TransformNode(zmoldname);
+		zmold.position = new BABYLON.Vector3(0,0,0);
+		zmold.rotation = new BABYLON.Vector3(0,0,0);
+		zmold.scaling = new BABYLON.Vector3(zlenx, zleny, zlenz);
 
 		var zobjectanimations = [];
 		var zobjectfolder = '/content/plugins/wtw-coins/assets/3dobjects/';
@@ -352,7 +348,7 @@ WTW_COINS.prototype.addMoldPlatformLift = function(zobjectfile, zmoldname, zmold
 						}
 					}
 				}
-				zmold = scene.getMeshByID(zmoldname);
+				zmold = WTW.getMeshOrNodeByID(zmoldname);
 				if (zmold == null || zmold.parent == null) {
 					/* if the parent has been deleted after this async process began (avoiding orphaned bjects) */
 					WTW.disposeClean(zmoldname);

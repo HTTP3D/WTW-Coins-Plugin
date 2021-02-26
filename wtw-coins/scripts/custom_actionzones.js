@@ -3,7 +3,7 @@ WTW_COINS.prototype.addActionZoneMyCustomZone = function(zactionzonename, zactio
 	try {
 		/* each custom Action Zone will have a separate function */
 		/* example is a Load Zone (but not built from queue) */
-		zactionzone = scene.getMeshByID(zactionzonename);
+		zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
 		if (zactionzone == null) {
 			/* WTW.newMold() provides a basic shape definition object */
 			let zmolddef = WTW.newMold();
@@ -247,7 +247,7 @@ WTW_COINS.prototype.addActionZoneCoin = function(zactionzonename, zactionzoneind
 	/* add a coin to the Action Zone center */
 	let zactionzone;
 	try {
-		zactionzone = scene.getMeshByID(zactionzonename);
+		zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
 		if (zactionzone == null) {
 			var zvalue1 = '1';
 			if (zactionzonedef.value1 != undefined) {
@@ -286,7 +286,7 @@ WTW_COINS.prototype.addActionZoneCoin = function(zactionzonename, zactionzoneind
 						for (var i=0;i < WTW.actionZones.length;i++) {
 							if (WTW.actionZones[i] != null) {
 								if (WTW.actionZones[i].actionzonetype == 'wtwcoin') {
-									var zactionzone = scene.getMeshByID(WTW.actionZones[i].moldname);
+									var zactionzone = WTW.getMeshOrNodeByID(WTW.actionZones[i].moldname);
 									if (zactionzone != null) {
 										var zrotation = WTW.getDegrees(zactionzone.rotation.y);
 
@@ -337,7 +337,7 @@ WTW_COINS.prototype.loadCoin = async function(zactionzonename, zvalue1, zscaling
 		}
 		
 		/* check for previous coin and remove it if exists */
-		var zactionzone = scene.getMeshByID(zactionzonename);
+		var zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
 		if (zactionzone != null) {
 			var zcoinparts = zactionzone.getChildren();
 			for (var i=0;i < zcoinparts.length;i++) {
@@ -351,7 +351,7 @@ WTW_COINS.prototype.loadCoin = async function(zactionzonename, zvalue1, zscaling
 		BABYLON.SceneLoader.ImportMeshAsync("", zfolder, zfile, scene).then(
 			function (zresults) {
 				if (zresults.meshes != null) {
-					zactionzone = scene.getMeshByID(zactionzonename);
+					zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
 					if (zactionzone != null) {
 						for (var i=0; i < zresults.meshes.length; i++) {
 							if (zresults.meshes[i] != null) {
@@ -369,7 +369,7 @@ WTW_COINS.prototype.loadCoin = async function(zactionzonename, zvalue1, zscaling
 					}
 				}
 				/* check to see if the mold still exists since the time it was requested */
-				zactionzone = scene.getMeshByID(zactionzonename);
+				zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
 				if (zactionzone == null) {
 					WTW.disposeClean(zactionzonename);
 				} else if (zghost == '') {
@@ -794,7 +794,7 @@ WTW_COINS.prototype.setNewCoin = function() {
 			dGet('wtwcoins_tactionzonecoinz').value = zpositionz.toFixed(2);
 		}
 		
-		var zactionzone = scene.getMeshByID(zactionzonename);
+		var zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
 		if (zactionzone != null) {
 			zactionzone.position.x = zpositionx;
 			zactionzone.position.y = zpositiony;
@@ -898,7 +898,7 @@ WTW_COINS.prototype.collectCoin = function(zactionzonename, zactionzoneind) {
 			}
 			if (WTW.actionZones[zactionzoneind].status == 2 || WTW.actionZones[zactionzoneind].status == 5) {
 				/* check for and remove it if exists */
-				var zactionzone = scene.getMeshByID(zactionzonename);
+				var zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
 				if (zactionzone != null) {
 					var zcoinparts = zactionzone.getChildren();
 					for (var i=0;i < zcoinparts.length;i++) {
@@ -940,7 +940,7 @@ WTW_COINS.prototype.removeCoin = function(zactionzonename, zactionzoneind) {
 		if (WTW.actionZones[zactionzoneind] != null) {
 			if (WTW.actionZones[zactionzoneind].status == 5) {
 				/* check for previous coin and remove it if exists */
-				var zactionzone = scene.getMeshByID(zactionzonename);
+				var zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
 				if (zactionzone != null) {
 					var zcoinparts = zactionzone.getChildren();
 					for (var i=0;i < zcoinparts.length;i++) {
@@ -960,7 +960,7 @@ WTW_COINS.prototype.tempHideCoin = function(zactionzonename, zactionzoneind) {
 		if (WTW.actionZones[zactionzoneind] != null) {
 			if (WTW.actionZones[zactionzoneind].status == 2) {
 				/* check for previous coin and remove it if exists */
-				var zactionzone = scene.getMeshByID(zactionzonename);
+				var zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
 				if (zactionzone != null) {
 					var zcoinparts = zactionzone.getChildren();
 					for (var i=0;i < zcoinparts.length;i++) {
