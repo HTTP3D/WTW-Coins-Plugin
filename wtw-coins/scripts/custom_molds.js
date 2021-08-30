@@ -85,6 +85,7 @@ WTW_COINS.prototype.setMoldFormFields = function(zshape) {
 				WTW.hide('wtw_moldbumptextureset2div');
 				WTW.hide('wtw_moldtexturesetdiv');
 				WTW.hide('wtw_moldmergemoldsdiv');
+				WTW.show('wtw_moldshadowreflectiondiv');
 				break;
 			case "wtwcoinbase":
 			case "wtwcoinbasedouble":
@@ -109,6 +110,7 @@ WTW_COINS.prototype.setMoldFormFields = function(zshape) {
 				WTW.hide('wtw_moldbasictextureset2div');
 				WTW.hide('wtw_moldbumptextureset2div');
 				WTW.hide('wtw_moldtexturesetdiv');
+				WTW.show('wtw_moldshadowreflectiondiv');
 				WTW.hide('wtw_moldmergemoldsdiv');
 				break;
 			case "wtwcoinlift":
@@ -132,6 +134,7 @@ WTW_COINS.prototype.setMoldFormFields = function(zshape) {
 				WTW.hide('wtw_moldbumptextureset2div');
 				WTW.hide('wtw_moldtexturesetdiv');
 				WTW.hide('wtw_moldmergemoldsdiv');
+				WTW.show('wtw_moldshadowreflectiondiv');
 				break;
 		}
 	} catch (ex) {
