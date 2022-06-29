@@ -318,7 +318,7 @@ WTW_COINS.prototype.addActionZoneCoin = function(zactionzonename, zactionzoneind
 				},50);
 			}
 			wtwcoins.loadPastCoinTotals();
-			wtwcoins.loadCoin(zactionzonename, zvalue1, zactionzonedef.scaling.x, zactionzonedef.scaling.y, zactionzonedef.scaling.z);
+			wtwcoins.loadCoin(zactionzonename, zvalue1, zactionzonedef.scaling.x, zactionzonedef.scaling.y, zactionzonedef.scaling.z, zactionzonedef);
 			WTW.actionZones[zactionzoneind].status = 2;
 		}
 		/* shown = "2" will keep it from adding a duplicate object while it is in the queue */
@@ -329,7 +329,7 @@ WTW_COINS.prototype.addActionZoneCoin = function(zactionzonename, zactionzoneind
 	return zactionzone;
 }
 
-WTW_COINS.prototype.loadCoin = async function(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz, zghost) {
+WTW_COINS.prototype.loadCoin = async function(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz, zghost, zactionzonedef) {
 	/* load the coin to the action zone */
 	try {
 		if (zghost == undefined) {
@@ -344,39 +344,41 @@ WTW_COINS.prototype.loadCoin = async function(zactionzonename, zvalue1, zscaling
 				zcoinparts[i].dispose();
 			}
 		}
-		
-		/* add coin using babylon file */
-		var zfolder = '/content/plugins/wtw-coins/assets/3dobjects/';
-		var zfile = 'wtwcoin-' + Math.round(zvalue1) + zghost + '.babylon';
-		BABYLON.SceneLoader.ImportMeshAsync("", zfolder, zfile, scene).then(
-			function (zresults) {
-				if (zresults.meshes != null) {
-					zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
-					if (zactionzone != null) {
-						for (var i=0; i < zresults.meshes.length; i++) {
-							if (zresults.meshes[i] != null) {
-								var zmeshname = zresults.meshes[i].name;
-								var zchildmoldname = zactionzonename + "-" + zmeshname;
-								zresults.meshes[i].name = zchildmoldname;
-								WTW.registerMouseOver(zresults.meshes[i]);
-								zresults.meshes[i].parent = zactionzone;
-								zresults.meshes[i].scaling.x = 1 / zscalingx;
-								zresults.meshes[i].scaling.y = 1 / zscalingy;
-								zresults.meshes[i].scaling.z = 1 / zscalingz;
-								zresults.meshes[i].position.y = 1 / zscalingy * 3;
+
+		if (zvalue1 > 0) {
+			/* add coin using babylon file */
+			var zfolder = '/content/plugins/wtw-coins/assets/3dobjects/';
+			var zfile = 'wtwcoin-' + Math.round(zvalue1) + zghost + '.babylon';
+			BABYLON.SceneLoader.ImportMeshAsync("", zfolder, zfile, scene).then(
+				function (zresults) {
+					if (zresults.meshes != null) {
+						zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
+						if (zactionzone != null) {
+							for (var i=0; i < zresults.meshes.length; i++) {
+								if (zresults.meshes[i] != null) {
+									var zmeshname = zresults.meshes[i].name;
+									var zchildmoldname = zactionzonename + "-" + zmeshname;
+									zresults.meshes[i].name = zchildmoldname;
+									WTW.registerMouseOver(zresults.meshes[i]);
+									zresults.meshes[i].parent = zactionzone;
+									zresults.meshes[i].scaling.x = 1 / zscalingx;
+									zresults.meshes[i].scaling.y = 1 / zscalingy;
+									zresults.meshes[i].scaling.z = 1 / zscalingz;
+									zresults.meshes[i].position.y = 1 / zscalingy * 3;
+								}
 							}
 						}
 					}
+					/* check to see if the mold still exists since the time it was requested */
+					zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
+					if (zactionzone == null) {
+						WTW.disposeClean(zactionzonename);
+					} else if (zghost == '') {
+						wtwcoins.checkCoin(zactionzonename);
+					}
 				}
-				/* check to see if the mold still exists since the time it was requested */
-				zactionzone = WTW.getMeshOrNodeByID(zactionzonename);
-				if (zactionzone == null) {
-					WTW.disposeClean(zactionzonename);
-				} else if (zghost == '') {
-					wtwcoins.checkCoin(zactionzonename);
-				}
-			}
-		);
+			);
+		}
 	} catch (ex) {
 		WTW.log("plugins:wtw-coins:scripts-custom_actionzones.js-loadCoin=" + ex.message);
 	}
@@ -410,7 +412,7 @@ WTW_COINS.prototype.checkCoin = async function(zactionzonename) {
 							if (zresponse.wtwcoinid != '') {
 								WTW.actionZones[zactionzoneind].status = 5;
 								if (dGet('wtwcoins_showghostcoins').checked) {
-									wtwcoins.loadCoin(zactionzonename, WTW.actionZones[zactionzoneind].value1, WTW.actionZones[zactionzoneind].scaling.x, WTW.actionZones[zactionzoneind].scaling.y, WTW.actionZones[zactionzoneind].scaling.z, '-ghost');
+									wtwcoins.loadCoin(zactionzonename, WTW.actionZones[zactionzoneind].value1, WTW.actionZones[zactionzoneind].scaling.x, WTW.actionZones[zactionzoneind].scaling.y, WTW.actionZones[zactionzoneind].scaling.z, '-ghost', WTW.actionZones[zactionzoneind]);
 								} else {
 									wtwcoins.removeCoin(zactionzonename, zactionzoneind);
 								}
@@ -538,7 +540,7 @@ WTW_COINS.prototype.submitCoinForm = async function(w) {
 					WTW.actionZones[zactionzoneind].scaling.x = zscalingx;
 					WTW.actionZones[zactionzoneind].scaling.y = zscalingy;
 					WTW.actionZones[zactionzoneind].scaling.z = zscalingz;
-					WTW.actionZones[zactionzoneind].loadactionzone = zloadactionzoneid;
+					WTW.actionZones[zactionzoneind].loadactionzoneid = zloadactionzoneid;
 				}
 				
 				/* save to the database */
@@ -619,7 +621,7 @@ WTW_COINS.prototype.submitCoinForm = async function(w) {
 					dGet('wtw_tactionzonerotationdirection').value = WTW.actionZones[zactionzoneind].axis.rotatedirection;
 					
 					if (dGet('wtw_tactionzonevalue1').value != zvalue1) {
-						wtwcoins.loadCoin(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz);
+						wtwcoins.loadCoin(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz, WTW.actionZones[zactionzoneind]);
 						dGet('wtw_tactionzonevalue1').value = zvalue1;
 					}
 					wtwcoins.setNewCoin();
@@ -803,7 +805,7 @@ WTW_COINS.prototype.setNewCoin = function() {
 		
 		if (Number(dGet('wtw_tactionzonevalue1').value) != Number(zvalue1)) {
 			/* load new coin by value */
-			wtwcoins.loadCoin(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz);
+			wtwcoins.loadCoin(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz, null);
 			dGet('wtw_tactionzonevalue1').value = zvalue1;
 		}
 	} catch (ex) {
@@ -922,7 +924,7 @@ WTW_COINS.prototype.showGhostCoins = function() {
 			if (WTW.actionZones[i] != null) {
 				if (WTW.actionZones[i].status == 5) {
 					if (dGet('wtwcoins_showghostcoins').checked) {
-						wtwcoins.loadCoin(WTW.actionZones[i].moldname, WTW.actionZones[i].value1, WTW.actionZones[i].scaling.x, WTW.actionZones[i].scaling.y, WTW.actionZones[i].scaling.z, '-ghost');
+						wtwcoins.loadCoin(WTW.actionZones[i].moldname, WTW.actionZones[i].value1, WTW.actionZones[i].scaling.x, WTW.actionZones[i].scaling.y, WTW.actionZones[i].scaling.z, '-ghost', WTW.actionZones[i]);
 					} else {
 						wtwcoins.removeCoin(WTW.actionZones[i].moldname, i);
 					}
@@ -973,7 +975,7 @@ WTW_COINS.prototype.tempHideCoin = function(zactionzonename, zactionzoneind) {
 				
 				/* make the coin available again after 5 seconds */
 				window.setTimeout(function(){
-					wtwcoins.loadCoin(zactionzonename, WTW.actionZones[zactionzoneind].value1, WTW.actionZones[zactionzoneind].scaling.x, WTW.actionZones[zactionzoneind].scaling.y, WTW.actionZones[zactionzoneind].scaling.z);
+					wtwcoins.loadCoin(zactionzonename, WTW.actionZones[zactionzoneind].value1, WTW.actionZones[zactionzoneind].scaling.x, WTW.actionZones[zactionzoneind].scaling.y, WTW.actionZones[zactionzoneind].scaling.z, WTW.actionZones[zactionzoneind]);
 					WTW.actionZones[zactionzoneind].status = 2;
 				},5000);
 			}
