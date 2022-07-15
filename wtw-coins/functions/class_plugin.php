@@ -114,7 +114,7 @@ class wtwcoins {
 			/* $wtwplugins->addScriptFunction('hookname', 'function(parameters);'); */
 			/* examples: */
 			/* $wtwplugins->addScriptFunction("onclick", "wtwcoins.onClick(pickedname);"); */
-			/* $wtwplugins->addScriptFunction("checkactionzone", "wtwcoins.checkActionZone(zactionzonename, zactionzoneind, zmeinzone, zothersinzone);"); */
+			/* $wtwplugins->addScriptFunction("checkactionperzone", "wtwcoins.checkActionZone(zactionzonename, zactionzoneind, zmeinzone, zothersinzone);"); */
 			/* $wtwplugins->addScriptFunction("checkhovers", "wtwcoins.checkHovers(zmoldname, zshape);"); */
 			/* $wtwplugins->addScriptFunction("resethovers", "wtwcoins.resetHovers(zmoldname, zshape);"); */
 			
@@ -138,7 +138,7 @@ class wtwcoins {
 			//$wtwplugins->addScriptFunction("setactionzoneformfields", "wtwcoins.setActionZoneFormFields(zactionzonetype);");
 			
 			$wtwplugins->addScriptFunction("mouseclickrightadmin", "wtwcoins.mouseClickRightAdmin(e, zpickedname);");
-			$wtwplugins->addScriptFunction("checkactionzone", "wtwcoins.checkActionZone(zactionzonename, zactionzoneind, zmeinzone, zothersinzone);");
+			$wtwplugins->addScriptFunction("checkactionperzone", "wtwcoins.checkActionZone(zactionzonename, zactionzoneind, zmeinzone, zothersinzone);");
 			$wtwplugins->addScriptFunction("loadusersettings", "wtwcoins.loadUserSettings();"); 
 			
 			
