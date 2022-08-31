@@ -19,10 +19,10 @@ class wtwcoins {
 		}
 	}	
 	
-	public $version = "1.0.0";
-
+	public $version = "1.0.2";
 	public $dbversion = "1.0.0";
-	
+	public $versiondate = "2020-8-31";
+		
 	public function __call ($method, $arguments)  {
 		if (isset($this->$method)) {
 			call_user_func_array($this->$method, array_merge(array(&$this), $arguments));
@@ -69,7 +69,7 @@ class wtwcoins {
 		try {
 			/* Admin only hooks */
 			if ($wtwplugins->pagename == "admin.php") {
-				$zupdateroles = array("admin","developer","architect","graphics artist");
+				$zupdateroles = array("admin","developer","architect","graphics artist","host");
 				$zdeveloperroles = array("admin","developer");
 
 				/* add admin menu items */
@@ -77,18 +77,18 @@ class wtwcoins {
 
 
 				/* add admin div section form */
-				$wtwplugins->addAdminMenuForm('wtwcoins_editcoindiv', 'Coin Settings', $this->editCoinForm(), array('admin','developer','architect'));
+				$wtwplugins->addAdminMenuForm('wtwcoins_editcoindiv', 'Coin Settings', $this->editCoinForm(), array('admin','developer','architect','host'));
 				
 				/* admin full page settings forms */
 				/* wtwplugins class -> addFullPageForm function (form id, allowed roles array - null for all, form html string) */
 
-				$wtwplugins->addAdminSubMenuItem('editcommunity', 'wtwcoins_adminCommunityMoldObjects', 'Add WTW Coin Objects', 120, array('admin','developer','architect'), "wtwcoins.openAdminCoinObjects();");
+				$wtwplugins->addAdminSubMenuItem('editcommunity', 'wtwcoins_adminCommunityMoldObjects', 'Add WTW Coin Objects', 120, array('admin','developer','architect','host'), "wtwcoins.openAdminCoinObjects();");
 				
-				$wtwplugins->addAdminSubMenuItem('editbuilding', 'wtwcoins_adminBuildingMoldObjects', 'Add WTW Coin Objects', 120, array('admin','developer','architect'), "wtwcoins.openAdminCoinObjects();");
+				$wtwplugins->addAdminSubMenuItem('editbuilding', 'wtwcoins_adminBuildingMoldObjects', 'Add WTW Coin Objects', 120, array('admin','developer','architect','host'), "wtwcoins.openAdminCoinObjects();");
 				
-				$wtwplugins->addAdminSubMenuItem('editthing', 'wtwcoins_adminThingMoldObjects', 'Add WTW Coin Objects', 120, array('admin','developer','architect'), "wtwcoins.openAdminCoinObjects();");
+				$wtwplugins->addAdminSubMenuItem('editthing', 'wtwcoins_adminThingMoldObjects', 'Add WTW Coin Objects', 120, array('admin','developer','architect','host'), "wtwcoins.openAdminCoinObjects();");
 				
-				$wtwplugins->addAdminMenuForm('wtwcoins_adminMoldObjectsDiv', 'Add WTW Coin Objects', $this->coinObjectsForm('community'), array('admin','developer','architect'));
+				$wtwplugins->addAdminMenuForm('wtwcoins_adminMoldObjectsDiv', 'Add WTW Coin Objects', $this->coinObjectsForm('community'), array('admin','developer','architect','host'));
 
 			}
 		} catch (Exception $e) {
@@ -184,7 +184,7 @@ class wtwcoins {
 			/* deltaCreateTable will add, alter, or remove fields or add the table if it doesnt exist */
 			/* check core/functions/class_wtwdb.php deltaCreateTable function for full support */
 			if ($wtwplugins->pagename == "admin.php") {
-				$zdbversion = $wtwplugins->getSetting(WTW_COINS_PREFIX."dbversion");
+				$zdbversion = $wtwplugins->getSetting(WTW_COINS_PREFIX."dbversion","1.0.0");
 				if ($zdbversion != $this->dbversion || empty($zdbversion) || !isset($zdbversion)) {
 					$wtwplugins->deltaCreateTable("
 						CREATE TABLE `".WTW_COINS_PREFIX."collected` (
@@ -291,10 +291,10 @@ class wtwcoins {
 			
 			$zformdata .= "<hr class=\"wtw-menuhr\" />\r\n";
 			$zformdata .= "<h2 style=\"margin-bottom:3px;\">Coin Value</h2>\r\n";
-			$zformdata .= "<select id=\"wtwcoins_tvalue1\" onchange=\"wtwcoins.setNewCoin();\"></select><br />\r\n";
+			$zformdata .= "<select id=\"wtwcoins_tvalue1\" onchange=\"wtwcoins.setNewCoin();\" class='wtw-pointer'></select><br />\r\n";
 			$zformdata .= "<hr class=\"wtw-menuhr\" />\r\n";
 			$zformdata .= "<h2 style=\"margin-bottom:3px;\">Coin Visibility Distance<br />(Load Zone)</h2>\r\n";
-			$zformdata .= "<select id=\"wtwcoins_tloadactionzoneid\"></select><br /><br />\r\n";
+			$zformdata .= "<select id=\"wtwcoins_tloadactionzoneid\" class='wtw-pointer'></select><br /><br />\r\n";
 
 			$zformdata .= "<div id=\"wtwcoins_savecoin\" class=\"wtw-greenbutton\" onclick=\"wtwcoins.submitCoinForm(1);\">Save Coin</div>\r\n";
 			
