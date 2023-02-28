@@ -1,4 +1,4 @@
-/* All code is Copyright 2013-2022 Aaron Scott Dishno Ed.D., HTTP3D Inc. - WalkTheWeb, and the contributors */
+/* All code is Copyright 2013-2023 Aaron Scott Dishno Ed.D., HTTP3D Inc. - WalkTheWeb, and the contributors */
 /* "3D Browsing" is a USPTO Patented (Serial # 9,940,404) and Worldwide PCT Patented Technology by Aaron Scott Dishno Ed.D. and HTTP3D Inc. */
 /* Read the included GNU Ver 3.0 license file for details and additional release information. */
 
@@ -83,6 +83,7 @@ WTW_COINS.prototype.setActionZoneFormFields = function(zactionzonetype) {
 				WTW.hide('wtw_copyaxletoactionzonediv');
 				WTW.hide('wtw_actionzoneadvancedoptslink');
 				WTW.hide('wtw_actionzonepartsdiv');
+				dGet('wtw_actionzoneadvancedoptslink').innerHTML = '-- Hide Advanced Options --';
 				WTW.show('wtw_actionzoneadvancedopts');
 				break;
 */		}
@@ -322,7 +323,7 @@ WTW_COINS.prototype.addActionZoneCoin = function(zactionzonename, zactionzoneind
 				},50);
 			}
 			wtwcoins.loadPastCoinTotals();
-			wtwcoins.loadCoin(zactionzonename, zvalue1, zactionzonedef.scaling.x, zactionzonedef.scaling.y, zactionzonedef.scaling.z, zactionzonedef);
+			wtwcoins.loadCoin(zactionzonename, zvalue1, zactionzonedef.scaling.x, zactionzonedef.scaling.y, zactionzonedef.scaling.z, zactionzonedef, '');
 			WTW.actionZones[zactionzoneind].status = 2;
 		}
 		/* shown = '2' will keep it from adding a duplicate object while it is in the queue */
@@ -333,7 +334,7 @@ WTW_COINS.prototype.addActionZoneCoin = function(zactionzonename, zactionzoneind
 	return zactionzone;
 }
 
-WTW_COINS.prototype.loadCoin = async function(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz, zghost, zactionzonedef) {
+WTW_COINS.prototype.loadCoin = async function(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz, zactionzonedef, zghost) {
 	/* load the coin to the action zone */
 	try {
 		if (zghost == undefined) {
@@ -348,7 +349,6 @@ WTW_COINS.prototype.loadCoin = async function(zactionzonename, zvalue1, zscaling
 				zcoinparts[i].dispose();
 			}
 		}
-
 		if (zvalue1 > 0) {
 			/* add coin using babylon file */
 			var zfolder = '/content/plugins/wtw-coins/assets/3dobjects/';
@@ -416,7 +416,7 @@ WTW_COINS.prototype.checkCoin = async function(zactionzonename) {
 							if (zresponse.wtwcoinid != '') {
 								WTW.actionZones[zactionzoneind].status = 5;
 								if (dGet('wtwcoins_showghostcoins').checked) {
-									wtwcoins.loadCoin(zactionzonename, WTW.actionZones[zactionzoneind].value1, WTW.actionZones[zactionzoneind].scaling.x, WTW.actionZones[zactionzoneind].scaling.y, WTW.actionZones[zactionzoneind].scaling.z, '-ghost', WTW.actionZones[zactionzoneind]);
+									wtwcoins.loadCoin(zactionzonename, WTW.actionZones[zactionzoneind].value1, WTW.actionZones[zactionzoneind].scaling.x, WTW.actionZones[zactionzoneind].scaling.y, WTW.actionZones[zactionzoneind].scaling.z, WTW.actionZones[zactionzoneind], '-ghost');
 								} else {
 									wtwcoins.removeCoin(zactionzonename, zactionzoneind);
 								}
@@ -625,7 +625,7 @@ WTW_COINS.prototype.submitCoinForm = async function(w) {
 					dGet('wtw_tactionzonerotationdirection').value = WTW.actionZones[zactionzoneind].axis.rotatedirection;
 					
 					if (dGet('wtw_tactionzonevalue1').value != zvalue1) {
-						wtwcoins.loadCoin(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz, WTW.actionZones[zactionzoneind]);
+						wtwcoins.loadCoin(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz, WTW.actionZones[zactionzoneind], '');
 						dGet('wtw_tactionzonevalue1').value = zvalue1;
 					}
 					wtwcoins.setNewCoin();
@@ -809,7 +809,7 @@ WTW_COINS.prototype.setNewCoin = function() {
 		
 		if (Number(dGet('wtw_tactionzonevalue1').value) != Number(zvalue1)) {
 			/* load new coin by value */
-			wtwcoins.loadCoin(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz, null);
+			wtwcoins.loadCoin(zactionzonename, zvalue1, zscalingx, zscalingy, zscalingz, null, '');
 			dGet('wtw_tactionzonevalue1').value = zvalue1;
 		}
 	} catch (ex) {
@@ -928,7 +928,7 @@ WTW_COINS.prototype.showGhostCoins = function() {
 			if (WTW.actionZones[i] != null) {
 				if (WTW.actionZones[i].status == 5) {
 					if (dGet('wtwcoins_showghostcoins').checked) {
-						wtwcoins.loadCoin(WTW.actionZones[i].moldname, WTW.actionZones[i].value1, WTW.actionZones[i].scaling.x, WTW.actionZones[i].scaling.y, WTW.actionZones[i].scaling.z, '-ghost', WTW.actionZones[i]);
+						wtwcoins.loadCoin(WTW.actionZones[i].moldname, WTW.actionZones[i].value1, WTW.actionZones[i].scaling.x, WTW.actionZones[i].scaling.y, WTW.actionZones[i].scaling.z, WTW.actionZones[i], '-ghost');
 					} else {
 						wtwcoins.removeCoin(WTW.actionZones[i].moldname, i);
 					}
@@ -979,7 +979,7 @@ WTW_COINS.prototype.tempHideCoin = function(zactionzonename, zactionzoneind) {
 				
 				/* make the coin available again after 5 seconds */
 				window.setTimeout(function(){
-					wtwcoins.loadCoin(zactionzonename, WTW.actionZones[zactionzoneind].value1, WTW.actionZones[zactionzoneind].scaling.x, WTW.actionZones[zactionzoneind].scaling.y, WTW.actionZones[zactionzoneind].scaling.z, WTW.actionZones[zactionzoneind]);
+					wtwcoins.loadCoin(zactionzonename, WTW.actionZones[zactionzoneind].value1, WTW.actionZones[zactionzoneind].scaling.x, WTW.actionZones[zactionzoneind].scaling.y, WTW.actionZones[zactionzoneind].scaling.z, WTW.actionZones[zactionzoneind], '');
 					WTW.actionZones[zactionzoneind].status = 2;
 				},5000);
 			}
